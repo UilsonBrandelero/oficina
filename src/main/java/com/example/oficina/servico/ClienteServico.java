@@ -35,11 +35,11 @@ public class ClienteServico {
     public Cliente editarCliente(Long idCliente, Cliente clienteEditado) {
         Cliente cliente = clienteRepositorio.findById(idCliente).get();
         if (cliente != null) {
-            cliente = clienteEditado;
+            
             clienteEditado.setId(idCliente);
             salvarCliente(clienteEditado);
             return clienteEditado;
-        } else {
+         }else {
             System.out.println("Erro ao editar cliente");
             return null;
 

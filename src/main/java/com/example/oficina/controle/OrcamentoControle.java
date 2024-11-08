@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +22,7 @@ public class OrcamentoControle {
 
     private final OrcamentoServico orcamentoServico;
 
-    @PostMapping("/cadastrar_orcamento")
+    @PostMapping("/cadastrar_orcamento_completo")
     public Orcamento cadastarOrcamento(@RequestParam Long idCliente, @RequestParam List<Long> idPecas, @RequestParam List<Long> idServicos) {
         return orcamentoServico.cadastrarOrcamento(idCliente, idPecas, idServicos);
 
@@ -31,13 +30,13 @@ public class OrcamentoControle {
 
     @PostMapping("/cadastrar_orcamento_pecas")
     public Orcamento cadastarOrcamentoPecas(@RequestParam Long idCliente, @RequestParam List<Long> idPecas) {
-        return orcamentoServico.cadastrarOrcamento(idCliente, idPecas);
+        return orcamentoServico.cadastrarOrcamentoPecas(idCliente, idPecas);
 
     }
 
     @PostMapping("/cadastrar_orcamento_servicos")
     public Orcamento cadastarOrcamentoServicos(@RequestParam Long idCliente, @RequestParam List<Long> idServicos) {
-        return orcamentoServico.cadastrarOrcamento(idCliente, idServicos);
+        return orcamentoServico.cadastrarOrcamentoServicos(idCliente, idServicos);
 
     }
 
@@ -45,12 +44,32 @@ public class OrcamentoControle {
     public List<Orcamento> listarOrcamentos() {
         return orcamentoServico.listarOrcamentos();
     }
+
     @GetMapping("/buscar_orcamento_id/{id}")
-    public Orcamento buscarOrcamentoPorId(@PathVariable Long id){
+    public Orcamento buscarOrcamentoPorId(@PathVariable Long id) {
         return orcamentoServico.buscaOrcamentoPorId(id);
     }
-    @PutMapping("/editar_orcamento")
-    public Orcamento editarOrcamento (@RequestParam Long id, @RequestBody Orcamento orcamento){
-        return orcamentoServico.buscaOrcamentoPorId(id);
+
+    @GetMapping("/buscar_orcamento_cliente/{idCliente}")
+    public List<Orcamento> buscarOrcamentoPorCliente(@PathVariable Long idCliente) {
+        return orcamentoServico.buscarOrcamentoPorCliente(idCliente);
     }
+
+    @PutMapping("/editar_pecas_orcamento")
+    public Orcamento editarPecasOrcamento(@RequestParam Long idOrcamento, @RequestParam List<Long> idPecas) {
+        return orcamentoServico.editarPecasOrcamento(idOrcamento, idPecas);
+    }
+
+    @PutMapping("/editar_servicos_orcamento")
+    public Orcamento editarServicosOrcamento(@RequestParam Long idOrcamento, @RequestParam List<Long> idServicos) {
+        return orcamentoServico.editarServicosOrcamento(idOrcamento, idServicos);
+
+    }
+
+    @GetMapping("/total_devido_por_cliente/{idCliente}")
+    public String calculaTotalDevidoPorCliente(@PathVariable Long idCliente) {
+        return orcamentoServico.calculaTotalGastoPorCliente(idCliente);
+
+    }
+
 }
