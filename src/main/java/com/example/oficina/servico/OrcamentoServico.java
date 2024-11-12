@@ -33,6 +33,7 @@ public class OrcamentoServico {
         List<Peca> pecas = new ArrayList<>();
         List<Servico> servicos = new ArrayList<>();
         double precoTotal = 0;
+        
         if (cliente != null && idPecas != null && idServicos != null) {
 
             for (Long p : idPecas) {
