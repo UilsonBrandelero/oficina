@@ -27,7 +27,7 @@ public class OrcamentoServico {
     private final ServicoRepositorio servicoRepositorio;
     private final PecaRepositorio pecaRepositorio;
 
-    public Orcamento cadastrarOrcamento(Long idCliente, List<Long> idPecas, List<Long> idServicos) {
+    public Orcamento cadastrarOrcamento(Long idCliente, Long[][] idPecas, List<Long> idServicos) {
         Cliente cliente = clienteRepositorio.findById(idCliente)
                 .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar cliente"));;
         List<Peca> pecas = new ArrayList<>();
@@ -36,9 +36,14 @@ public class OrcamentoServico {
         
         if (cliente != null && idPecas != null && idServicos != null) {
 
-            for (Long p : idPecas) {
-                Peca peca = pecaRepositorio.findById(p)
-                        .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar peca"));
+            for (Long[]p : idPecas) {
+                Long [] quantidades = p;
+                
+                for(Long i: quantidades){
+                    Peca peca = pecaRepositorio.findById(p)
+                            .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar peca"));
+                    
+                }
                 pecas.add(peca);
                 precoTotal += peca.getPrecoPeca();
             }
@@ -52,7 +57,7 @@ public class OrcamentoServico {
             Orcamento orcamento = new Orcamento();
             orcamento.setCliente(cliente);
             orcamento.setServicos(servicos);
-            orcamento.setPecas(pecas);
+           // orcamento.setPecas(pecas);
             orcamento.setDataOrcamento(LocalDateTime.now());
             orcamento.setValorTotal(precoTotal);
             orcamento.setValorDescontado(calculaDescosto(precoTotal));
@@ -80,7 +85,7 @@ public class OrcamentoServico {
             }
             Orcamento orcamento = new Orcamento();
             orcamento.setCliente(cliente);
-            orcamento.setPecas(pecas);
+           // orcamento.setPecas(pecas);
             orcamento.setDataOrcamento(LocalDateTime.now());
             orcamento.setValorTotal(precoTotal);
             orcamento.setValorDescontado(precoTotal);
@@ -166,7 +171,7 @@ public class OrcamentoServico {
                         .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar Peca"));
                 pecas.add(peca);
             }
-            orcamento.setPecas(pecas);
+            //orcamento.setPecas(pecas);
             return orcamentoReposistorio.save(orcamento);
         } else {
             System.out.println("Erro ao editar Pecas do Orcamento");

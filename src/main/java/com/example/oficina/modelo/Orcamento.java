@@ -3,6 +3,7 @@ package com.example.oficina.modelo;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Entity
@@ -25,14 +27,8 @@ public class Orcamento {
     @ManyToOne
     private Cliente cliente;
 
-    @ManyToMany
-    @JoinTable(
-        name = "orcamento_peca",
-        joinColumns = @JoinColumn(name="orcamento_id"),
-        inverseJoinColumns= @JoinColumn(name="peca_id")
-        
-    )
-    private List<Peca> pecas;
+   @OneToMany(mappedBy= "orcamento", cascade= CascadeType.ALL)
+    private List<PecasOrcamento> pecasOrcamentos;
 
     @ManyToMany
     @JoinTable(

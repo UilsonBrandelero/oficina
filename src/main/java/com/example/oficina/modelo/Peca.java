@@ -16,7 +16,8 @@ public class Peca {
     private Long id;
     private String nomePeca;
     private double precoPeca;
-   
-    
+
+    // @OneToMany(mappedBy = "peca")
+    // private Map<Peca,Integer> pecasQuantidade;
 
 }
