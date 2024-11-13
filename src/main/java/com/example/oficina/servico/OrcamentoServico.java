@@ -2,7 +2,9 @@ package com.example.oficina.servico;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -27,25 +29,21 @@ public class OrcamentoServico {
     private final ServicoRepositorio servicoRepositorio;
     private final PecaRepositorio pecaRepositorio;
 
-    public Orcamento cadastrarOrcamento(Long idCliente, Long[][] idPecas, List<Long> idServicos) {
+    public Orcamento cadastrarOrcamento(Long idCliente, List<Long> idPecas, List<Integer> quantidadePecas, List<Long> idServicos) {
         Cliente cliente = clienteRepositorio.findById(idCliente)
                 .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar cliente"));;
-        List<Peca> pecas = new ArrayList<>();
+        Map<Peca, Integer> pecasQuantidades = new HashMap<>();
         List<Servico> servicos = new ArrayList<>();
         double precoTotal = 0;
-        
-        if (cliente != null && idPecas != null && idServicos != null) {
 
-            for (Long[]p : idPecas) {
-                Long [] quantidades = p;
-                
-                for(Long i: quantidades){
-                    Peca peca = pecaRepositorio.findById(p)
-                            .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar peca"));
-                    
-                }
-                pecas.add(peca);
+        if (cliente != null && idPecas != null && idServicos != null && quantidadePecas != null && quantidadePecas.size() == idPecas.size()) {
+
+            for (int i = 0; i <= idPecas.size(); i++) {
+                Peca peca = pecaRepositorio.findById(idPecas.get(i))
+                        .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar peca"));
+                Integer quantidade = quantidadePecas.get(i);
                 precoTotal += peca.getPrecoPeca();
+                pecasQuantidades.put(peca, quantidade);
             }
             for (Long s : idServicos) {
                 Servico servico = servicoRepositorio.findById(s).
@@ -55,12 +53,12 @@ public class OrcamentoServico {
 
             }
             Orcamento orcamento = new Orcamento();
-            orcamento.setCliente(cliente);
-            orcamento.setServicos(servicos);
-           // orcamento.setPecas(pecas);
-            orcamento.setDataOrcamento(LocalDateTime.now());
-            orcamento.setValorTotal(precoTotal);
-            orcamento.setValorDescontado(calculaDescosto(precoTotal));
+            // orcamento.setCliente(cliente);
+            // orcamento.setServicos(servicos);
+            // //orcamento.set
+            // orcamento.setDataOrcamento(LocalDateTime.now());
+            // orcamento.setValorTotal(precoTotal);
+            // orcamento.setValorDescontado(calculaDescosto(precoTotal));
 
             return orcamentoReposistorio.save(orcamento);
         } else {
@@ -85,7 +83,7 @@ public class OrcamentoServico {
             }
             Orcamento orcamento = new Orcamento();
             orcamento.setCliente(cliente);
-           // orcamento.setPecas(pecas);
+            // orcamento.setPecas(pecas);
             orcamento.setDataOrcamento(LocalDateTime.now());
             orcamento.setValorTotal(precoTotal);
             orcamento.setValorDescontado(precoTotal);
