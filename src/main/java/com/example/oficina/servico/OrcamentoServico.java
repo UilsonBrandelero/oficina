@@ -38,11 +38,11 @@ public class OrcamentoServico {
 
         if (cliente != null && idPecas != null && idServicos != null && quantidadePecas != null && quantidadePecas.size() == idPecas.size()) {
 
-            for (int i = 0; i <= idPecas.size(); i++) {
+            for (int i = 0; i < idPecas.size(); i++) {
                 Peca peca = pecaRepositorio.findById(idPecas.get(i))
                         .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar peca"));
                 Integer quantidade = quantidadePecas.get(i);
-                precoTotal += peca.getPrecoPeca();
+                precoTotal += peca.getPrecoPeca() * quantidade;
                 pecasQuantidades.put(peca, quantidade);
             }
             for (Long s : idServicos) {
@@ -53,12 +53,12 @@ public class OrcamentoServico {
 
             }
             Orcamento orcamento = new Orcamento();
-            // orcamento.setCliente(cliente);
-            // orcamento.setServicos(servicos);
-            // //orcamento.set
-            // orcamento.setDataOrcamento(LocalDateTime.now());
-            // orcamento.setValorTotal(precoTotal);
-            // orcamento.setValorDescontado(calculaDescosto(precoTotal));
+            orcamento.setCliente(cliente);
+            orcamento.setServicos(servicos);
+            orcamento.setPecasQuantidade(pecasQuantidades);
+            orcamento.setDataOrcamento(LocalDateTime.now());
+            orcamento.setValorTotal(precoTotal);
+            orcamento.setValorDescontado(calculaDescosto(precoTotal));
 
             return orcamentoReposistorio.save(orcamento);
         } else {
@@ -68,22 +68,24 @@ public class OrcamentoServico {
 
     }
 
-    public Orcamento cadastrarOrcamentoPecas(Long idCliente, List<Long> idPecas) {
+    public Orcamento cadastrarOrcamentoPecas(Long idCliente, List<Long> idPecas, List<Integer> quantidadePecas) {
         Cliente cliente = clienteRepositorio.findById(idCliente).orElseThrow(() -> new IllegalArgumentException("Erro ao buscar cliente"));
-        List<Peca> pecas = new ArrayList<>();
+        Map<Peca, Integer> pecasQuantidade = new HashMap<>();
         double precoTotal = 0;
 
-        if (cliente != null && idPecas != null) {
+        if (cliente != null && idPecas != null && quantidadePecas.size() == idPecas.size()) {
 
-            for (Long p : idPecas) {
-                Peca peca = pecaRepositorio.findById(p)
+            for (int i = 0; i < idPecas.size(); i++) {
+                Peca peca = pecaRepositorio.findById(idPecas.get(i))
                         .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar peca"));
-                pecas.add(peca);
-                precoTotal += peca.getPrecoPeca();
+                Integer quantidade = quantidadePecas.get(i);
+                precoTotal += peca.getPrecoPeca() * quantidade;
+                pecasQuantidade.put(peca, quantidade);
+
             }
             Orcamento orcamento = new Orcamento();
             orcamento.setCliente(cliente);
-            // orcamento.setPecas(pecas);
+            orcamento.setPecasQuantidade(pecasQuantidade);
             orcamento.setDataOrcamento(LocalDateTime.now());
             orcamento.setValorTotal(precoTotal);
             orcamento.setValorDescontado(precoTotal);
@@ -159,15 +161,15 @@ public class OrcamentoServico {
         }
     }
 
-    public Orcamento editarPecasOrcamento(Long idOrcamento, List<Long> idPecas) {
-        List<Peca> pecas = new ArrayList<>();
+    public Orcamento editarPecasOrcamento(Long idOrcamento, List<Long> idPecas, List<Integer> quantidadePecas) {
+       Map<Peca, Integer> pecasQuantidade = new HashMap<>();
         Orcamento orcamento = orcamentoReposistorio.findById(idOrcamento)
                 .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar Orcamento"));
-        if (orcamento != null) {
-            for (Long p : idPecas) {
-                Peca peca = pecaRepositorio.findById(p)
+        if (orcamento != null && idPecas.size() == quantidadePecas.size()) {
+            for (int i = 0; i < 0 ; i++) {
+                Peca peca = pecaRepositorio.findById(idPecas.get(i))
                         .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar Peca"));
-                pecas.add(peca);
+                //Integer
             }
             //orcamento.setPecas(pecas);
             return orcamentoReposistorio.save(orcamento);

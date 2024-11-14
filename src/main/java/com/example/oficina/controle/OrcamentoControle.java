@@ -23,14 +23,14 @@ public class OrcamentoControle {
     private final OrcamentoServico orcamentoServico;
 
     @PostMapping("/cadastrar_orcamento_completo")
-    public Orcamento cadastarOrcamento(@RequestParam Long idCliente, @RequestParam List<Long> idPecas, @RequestParam List<Long> idServicos) {
-        return orcamentoServico.cadastrarOrcamento(idCliente, idPecas, idServicos);
+    public Orcamento cadastarOrcamento(@RequestParam Long idCliente, @RequestParam List<Long> idPecas,@RequestParam List<Integer> quantidadePecas, @RequestParam List<Long> idServicos) {
+        return orcamentoServico.cadastrarOrcamento(idCliente, idPecas,quantidadePecas, idServicos);
 
     }
 
     @PostMapping("/cadastrar_orcamento_pecas")
-    public Orcamento cadastarOrcamentoPecas(@RequestParam Long idCliente, @RequestParam List<Long> idPecas) {
-        return orcamentoServico.cadastrarOrcamentoPecas(idCliente, idPecas);
+    public Orcamento cadastarOrcamentoPecas(@RequestParam Long idCliente, @RequestParam List<Long> idPecas, @RequestParam List<Integer> quantidadePecas) {
+        return orcamentoServico.cadastrarOrcamentoPecas(idCliente, idPecas, quantidadePecas);
 
     }
 
@@ -56,8 +56,8 @@ public class OrcamentoControle {
     }
 
     @PutMapping("/editar_pecas_orcamento")
-    public Orcamento editarPecasOrcamento(@RequestParam Long idOrcamento, @RequestParam List<Long> idPecas) {
-        return orcamentoServico.editarPecasOrcamento(idOrcamento, idPecas);
+    public Orcamento editarPecasOrcamento(@RequestParam Long idOrcamento, @RequestParam List<Long> idPecas, @RequestParam List<Integer> quantidade) {
+        return orcamentoServico.editarPecasOrcamento(idOrcamento, idPecas, quantidade);
     }
 
     @PutMapping("/editar_servicos_orcamento")
