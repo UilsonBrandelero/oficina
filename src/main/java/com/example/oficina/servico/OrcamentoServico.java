@@ -186,7 +186,7 @@ public class OrcamentoServico {
         orcamentoReposistorio.delete(orcamento);
     }
 
-    private double calculaDescosto(double precoTotal) {
+    public double calculaDescosto(double precoTotal) {
         return precoTotal * 0.9;
     }
 

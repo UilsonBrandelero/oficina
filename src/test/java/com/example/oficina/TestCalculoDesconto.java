@@ -37,7 +37,7 @@ class TestCalculoDesconto {
     }
     @Test
     public void testCalculaDesconto(){
-        assertEquals(90, orcamentoServico.chamarDesconto(100));
+        assertEquals(90, orcamentoServico.calculaDescosto(100));
     }
 
 }
