@@ -2,6 +2,7 @@ package com.example.oficina.controle;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,6 +71,10 @@ public class OrcamentoControle {
     public String calculaTotalDevidoPorCliente(@PathVariable Long idCliente) {
         return orcamentoServico.calculaTotalGastoPorCliente(idCliente);
 
+    }
+    @DeleteMapping("/deletar_orcamento/{id}")
+    public void deletarOrcamento(@PathVariable Long id){
+        orcamentoServico.deletarOrcamento(id);
     }
 
 }
