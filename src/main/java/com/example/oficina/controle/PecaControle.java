@@ -42,6 +42,10 @@ public class PecaControle {
     public Peca editarPeca(@RequestParam Long id, @RequestBody Peca pecaEditada){
         return pecaServico.editarPeca(id, pecaEditada);
     }
+    @PutMapping("/adicionar_peca_estoque")
+    public Peca adicionarPecaEstoque(@RequestParam Long idPeca, @RequestParam int quantidadeAdicionar){
+        return  pecaServico.adiconarEstoquePeca(idPeca, quantidadeAdicionar);
+    }
     @DeleteMapping("/deletar_peca")
     public void deletarPeca(@RequestParam Long id){
         pecaServico.deletarPeca(id);

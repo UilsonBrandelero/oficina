@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.oficina.modelo.Orcamento;
 import com.example.oficina.servico.OrcamentoServico;
+import com.example.oficina.util.ExcepitonQuantidade;
 
 import lombok.AllArgsConstructor;
 
@@ -25,13 +26,28 @@ public class OrcamentoControle {
 
     @PostMapping("/cadastrar_orcamento_completo")
     public Orcamento cadastarOrcamento(@RequestParam Long idCliente, @RequestParam List<Long> idPecas,@RequestParam List<Integer> quantidadePecas, @RequestParam List<Long> idServicos) {
-        return orcamentoServico.cadastrarOrcamento(idCliente, idPecas,quantidadePecas, idServicos);
+        Orcamento orcamento = orcamentoServico.cadastrarOrcamento(idCliente, idPecas,quantidadePecas, idServicos);
+        if (orcamento != null) {
+            return orcamento;
+            
+        }else{
+            throw new ExcepitonQuantidade();
+           // return null;
+            
+        }
+        
 
     }
 
     @PostMapping("/cadastrar_orcamento_pecas")
     public Orcamento cadastarOrcamentoPecas(@RequestParam Long idCliente, @RequestParam List<Long> idPecas, @RequestParam List<Integer> quantidadePecas) {
-        return orcamentoServico.cadastrarOrcamentoPecas(idCliente, idPecas, quantidadePecas);
+        Orcamento orcamento =  orcamentoServico.cadastrarOrcamentoPecas(idCliente, idPecas, quantidadePecas);
+        if(orcamento != null){
+            return orcamento;
+
+        }else{
+            throw new ExcepitonQuantidade();
+        }
 
     }
 

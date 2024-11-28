@@ -6,6 +6,10 @@ header{
     margin: auto;
     margin-top: 30px;
 }
+body{
+   width: 75%;
+    margin: auto;
+}
 .titulo{
     margin: auto;
     padding-top: 15px;
@@ -32,4 +36,8 @@ header h4{
     width: 50%;
     align-self: center;
     padding-top: 15px;
+}
+.cartao{
+margin-top: 15px;
+ 
 }

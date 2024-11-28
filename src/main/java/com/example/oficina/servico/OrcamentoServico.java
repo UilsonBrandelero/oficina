@@ -28,6 +28,7 @@ public class OrcamentoServico {
     private final ClienteRepositorio clienteRepositorio;
     private final ServicoRepositorio servicoRepositorio;
     private final PecaRepositorio pecaRepositorio;
+    private final PecaServico pecaServico;
 
     public Orcamento cadastrarOrcamento(Long idCliente, List<Long> idPecas, List<Integer> quantidadePecas, List<Long> idServicos) {
         Cliente cliente = clienteRepositorio.findById(idCliente)
@@ -42,9 +43,17 @@ public class OrcamentoServico {
                 Peca peca = pecaRepositorio.findById(idPecas.get(i))
                         .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar peca"));
                 Integer quantidade = quantidadePecas.get(i);
-                precoTotal += peca.getPrecoPeca() * quantidade;
-                pecasQuantidades.put(peca, quantidade);
+
+                if (peca.getQuantidadeEstoque() >= quantidade) {
+                    precoTotal += peca.getPrecoPeca() * quantidade;
+                    pecaServico.alterarQuantidadeEstoque(peca.getId(), quantidade);
+                    pecasQuantidades.put(peca, quantidade);
+                } else {
+                    System.out.println("Estoque insuficiente");
+                    return null;
+                }
             }
+
             for (Long s : idServicos) {
                 Servico servico = servicoRepositorio.findById(s).
                         orElseThrow(() -> new IllegalArgumentException("Erro ao buscar Servico"));;
@@ -79,8 +88,15 @@ public class OrcamentoServico {
                 Peca peca = pecaRepositorio.findById(idPecas.get(i))
                         .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar peca"));
                 Integer quantidade = quantidadePecas.get(i);
-                precoTotal += peca.getPrecoPeca() * quantidade;
-                pecasQuantidade.put(peca, quantidade);
+                if (peca.getQuantidadeEstoque() >= quantidade) {
+                    pecaServico.alterarQuantidadeEstoque(peca.getId(), quantidade);
+                    precoTotal += peca.getPrecoPeca() * quantidade;
+                    pecasQuantidade.put(peca, quantidade);
+
+                }else{
+                    System.out.println("Quantidade de peça insuficente");
+                    return null;
+                }
 
             }
             Orcamento orcamento = new Orcamento();
@@ -162,11 +178,11 @@ public class OrcamentoServico {
     }
 
     public Orcamento editarPecasOrcamento(Long idOrcamento, List<Long> idPecas, List<Integer> quantidadePecas) {
-       Map<Peca, Integer> pecasQuantidade = new HashMap<>();
+        Map<Peca, Integer> pecasQuantidade = new HashMap<>();
         Orcamento orcamento = orcamentoReposistorio.findById(idOrcamento)
                 .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar Orcamento"));
         if (orcamento != null && idPecas.size() == quantidadePecas.size()) {
-            for (int i = 0; i < 0 ; i++) {
+            for (int i = 0; i < 0; i++) {
                 Peca peca = pecaRepositorio.findById(idPecas.get(i))
                         .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar Peca"));
                 //Integer
