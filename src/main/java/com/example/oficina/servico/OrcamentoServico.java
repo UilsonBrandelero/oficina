@@ -182,12 +182,13 @@ public class OrcamentoServico {
         Orcamento orcamento = orcamentoReposistorio.findById(idOrcamento)
                 .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar Orcamento"));
         if (orcamento != null && idPecas.size() == quantidadePecas.size()) {
-            for (int i = 0; i < 0; i++) {
+            for (int i = 0; i < idPecas.size(); i++) {
                 Peca peca = pecaRepositorio.findById(idPecas.get(i))
                         .orElseThrow(() -> new IllegalArgumentException("Erro ao buscar Peca"));
-                //Integer
+                int quantidade = quantidadePecas.get(i);
+                pecasQuantidade.put(peca, quantidade);
             }
-            //orcamento.setPecas(pecas);
+            orcamento.setPecasQuantidade(pecasQuantidade);
             return orcamentoReposistorio.save(orcamento);
         } else {
             System.out.println("Erro ao editar Pecas do Orcamento");
